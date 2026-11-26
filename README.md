@@ -17,8 +17,8 @@ pytest tests for the REST API behind the [Practice Software Testing](https://pra
 ## Run it
 
 ```bash
-git clone https://github.com/Belaalos/toolshop-api-tests.git
-cd toolshop-api-tests
+git clone https://github.com/Belaalos/product-search-api-tests.git
+cd product-search-api-tests
 python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 pytest
