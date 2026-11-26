@@ -24,14 +24,22 @@ def test_category_tree_is_available(get):
     assert isinstance(resp.json(), list)
 
 
+def post_login(body):
+    """The public server sometimes answers 500 for a moment (seen once in CI), so retry once."""
+    resp = requests.post(f"{BASE_URL}/users/login", json=body, timeout=20)
+    if resp.status_code >= 500:
+        resp = requests.post(f"{BASE_URL}/users/login", json=body, timeout=20)
+    return resp
+
+
 def test_login_with_wrong_credentials_is_unauthorized():
-    resp = requests.post(f"{BASE_URL}/users/login", json={"email": "nobody@example.com", "password": "wrong"}, timeout=20)
+    resp = post_login({"email": "nobody@example.com", "password": "wrong"})
     assert resp.status_code == 401
     assert resp.json() == {"error": "Unauthorized"}
 
 
 def test_login_with_empty_body_is_unauthorized():
-    resp = requests.post(f"{BASE_URL}/users/login", json={}, timeout=20)
+    resp = post_login({})
     assert resp.status_code == 401
 
 
